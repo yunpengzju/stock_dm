@@ -2,6 +2,8 @@
 # coding: utf-8
 
 import urllib2
+import datetime
+import pickle
 from progressbar import *
 
 
@@ -36,7 +38,11 @@ def analyze_stock_info(stock_info):
         'poe': segs[46],
         'total': float(segs[45]),
         'highest': segs[41],
-        'time': segs[30]
+        'lowest': segs[42],
+        'time': segs[30],
+        'change': segs[32],
+        'exchange_ratio': segs[38]
+
     }
     return stock_dict
 
@@ -79,6 +85,9 @@ if __name__ == "__main__":
         #print s_dict
 
     pbar.finish()
+    date_str = str(datetime.datetime.now().date())
+    with open("data/"+date_str, 'w') as f:
+        pickle.dump(s_dict_list, f, 0)
 
     s_dict_list = filter(total_filter, s_dict_list)
 
