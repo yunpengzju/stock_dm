@@ -7,9 +7,11 @@ import os
 import pickle
 
 DATA_ROOT = "data"
-LAST_N = 7
-TOP_N = 15
+LAST_N = 5
+TOP_N = 10
 SAFE_PE = 100
+SAFE_RATIO = 1.08
+JUMP_RATIO = 1.06
 
 def split_date(date):
     if date:
@@ -96,10 +98,23 @@ def next_deal_day(today):
     if not today:
         return None
     day = today
+    n = 100
     while True:
+        n -= 1
+        if n == 0:
+            return None
         day = tomorrow(day)
         if is_file_exist(day):
             return day
+
+def next_n_day(today, n):
+    day = today
+    while n:
+        day = next_deal_day(day)
+        if not day:
+            return None
+        n -= 1
+    return day
 
 def is_file_exist(day_str):
     if not day_str:
@@ -143,9 +158,15 @@ def filter_stock(stock_list, last_n_day_values):
     res = []
     for stock in stock_list:
         try:
-            if float(stock.get('price')) > float(last_n_day_values[0].get(stock.get('id')).get('highest')):
+            cur_price = float(stock.get('price'))
+            start_price = float(last_n_day_values[LAST_N-2].get(stock.get('id')).get('price'))
+            last_highest = float(last_n_day_values[0].get(stock.get('id')).get('highest'))
+            last_lowest = float(last_n_day_values[0].get(stock.get('id')).get('lowest'))
+            last_2_price = float(last_n_day_values[1].get(stock.get('id')).get('price'))
+            if float(stock.get('price')) > last_highest:
                 if stock.get('pe_ratio') < SAFE_PE:
-                    res.append(stock)
+                    if cur_price < SAFE_RATIO * start_price:
+                        res.append(stock)
         except:
             print "ERROR2:" + stock.get('id')
             continue
@@ -175,6 +196,8 @@ def sort_top_stock(date):
 
     top_stocks = []
     for i in range(TOP_N):
+        if i > len(sorted_stock_list) - 1:
+            break
         stock = sorted_stock_list[i]
         # print stock.get('name'),
         # print stock.get('id'),
@@ -205,7 +228,7 @@ if __name__ == "__main__":
 
     next_day_data = []
     if not is_today:
-        next_day_data = get_day_data(next_deal_day(date))
+        next_day_data = get_day_data(next_n_day(date,1))
 
     last_day = last_deal_day(date)
     tops = sort_top_stock(last_day)

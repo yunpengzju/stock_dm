@@ -34,7 +34,7 @@ def analyze_stock_info(stock_info):
         'name': segs[1].decode('gbk'),
         'price': segs[3],
         'pe_ratio': float(segs[39]),
-        'volume': segs[6],
+        'volume': segs[36],
         'poe': segs[46],
         'total': float(segs[45]),
         'highest': segs[41],
