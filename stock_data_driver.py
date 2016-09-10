@@ -86,6 +86,12 @@ if __name__ == "__main__":
 
     pbar.finish()
     date_str = str(datetime.datetime.now().date())
+    s_time = s_dict_list[0]['time']
+    s_date = s_time[0:4] + "-" + s_time[4:6] + "-" + s_time[6:8]
+
+    if s_date != date_str:
+        exit(2)
+
     with open("data/"+date_str, 'w') as f:
         pickle.dump(s_dict_list, f, 0)
 
