@@ -6,6 +6,8 @@ import datetime
 import pickle
 from progressbar import *
 
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
 
 URL = "http://qt.gtimg.cn/q="
 TOTAL = 731

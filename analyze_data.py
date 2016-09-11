@@ -6,6 +6,9 @@ import sys
 import os
 import pickle
 
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+
 DATA_ROOT = "data"
 LAST_N = 5
 TOP_N = 10
