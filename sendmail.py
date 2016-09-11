@@ -32,7 +32,7 @@ if __name__ == '__main__':
     #date = sys.argv[1]
     content = sys.argv[1]
     #produceMsg()
-    mailto_list=["gsj_echo@163.com"]
+    mailto_list=["iamchenyp@126.com"]
     mail_content = ""
     with open(content, 'r') as f:
         mail_content = f.read()
