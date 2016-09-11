@@ -10,11 +10,12 @@ reload(sys)
 sys.setdefaultencoding( "utf-8" )
 
 DATA_ROOT = "data"
-LAST_N = 5
-TOP_N = 10
-SAFE_PE = 100
+LAST_N = 6
+TOP_N = 5
+SAFE_PE = 80
 SAFE_RATIO = 1.08
 JUMP_RATIO = 1.06
+LOWEST_PRICE = 12
 
 def split_date(date):
     if date:
@@ -166,7 +167,7 @@ def filter_stock(stock_list, last_n_day_values):
             last_highest = float(last_n_day_values[0].get(stock.get('id')).get('highest'))
             last_lowest = float(last_n_day_values[0].get(stock.get('id')).get('lowest'))
             last_2_price = float(last_n_day_values[1].get(stock.get('id')).get('price'))
-            if float(stock.get('price')) > last_highest:
+            if cur_price > last_highest and cur_price > LOWEST_PRICE:
                 if stock.get('pe_ratio') < SAFE_PE:
                     if cur_price < SAFE_RATIO * start_price:
                         res.append(stock)
