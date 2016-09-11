@@ -227,6 +227,9 @@ if __name__ == "__main__":
     except:
         date = str(datetime.datetime.now().date())
     is_today = False
+    if date == "yestoday":
+        date = last_deal_day(yestoday(str(datetime.datetime.now().date())))
+        print date
     if date == str(datetime.datetime.now().date()):
         is_today = True
 
@@ -251,17 +254,18 @@ if __name__ == "__main__":
         print stock.get('name'),
         print stock.get('id'),
         print "price: "+stock.get('price'),
+        print "change:" + stock.get('change'),
         print "pe_ratio: "+str(stock.get('pe_ratio')),
-        print "exchange: "+stock.get('exchange_ratio'),
-        print 'mark: ' + str(stock.get('mark')),
-        print date + ": " + str(stock.get('sort')),
-        for s in yestoday_tops:
-            if s.get('id') == stock.get('id'):
-                print "yestoday: " + str(s.get('sort')),
-                break
-        else:
-            print "yestoday: None",
-
+        if is_today:
+            print "exchange: "+stock.get('exchange_ratio'),
+            print 'mark: ' + str(stock.get('mark')),
+            print date + ": " + str(stock.get('sort')),
+            for s in yestoday_tops:
+                if s.get('id') == stock.get('id'):
+                    print "yestoday: " + str(s.get('sort')),
+                    break
+            else:
+                print "yestoday: None",
 
         if not is_today:
             for stock_next in next_day_data:

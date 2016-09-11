@@ -5,6 +5,7 @@ import urllib
 import urllib2
 import smtplib,sys
 from email.mime.text import MIMEText
+import datetime
 
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
@@ -31,10 +32,14 @@ def send_mail(to_list,sub,content):
 if __name__ == '__main__':
     #date = sys.argv[1]
     content = sys.argv[1]
+    option = sys.argv[2]
     #produceMsg()
     mailto_list=["iamchenyp@126.com"]
     mail_content = ""
     with open(content, 'r') as f:
         mail_content = f.read()
     #send_mail(mailto_list, sub, content)
-    send_mail(mailto_list, u'每日预测', mail_content)
+    if option == '1':
+        send_mail(mailto_list, u'每日回顾'+str(datetime.datetime.now().date()), mail_content)
+    else:
+        send_mail(mailto_list, u'每日预测'+str(datetime.datetime.now().date()), mail_content)
