@@ -37,4 +37,4 @@ if __name__ == '__main__':
     with open(content, 'r') as f:
         mail_content = f.read()
     #send_mail(mailto_list, sub, content)
-    send_mail(mailto_list, u'每日预测', content)
+    send_mail(mailto_list, u'每日预测', mail_content)
