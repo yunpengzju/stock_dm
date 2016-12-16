@@ -60,11 +60,11 @@ def tomorrow(date_str):
     num_year = int(year)
 
     num_day = num_day + 1
-    if num_day == 31:
+    if num_day == 32:
         num_day = 1
         num_month = num_month + 1
 
-    if num_month == 12:
+    if num_month == 13:
         num_month = 1
         num_year = num_year + 1
 
