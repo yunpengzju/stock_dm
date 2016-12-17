@@ -111,6 +111,16 @@ def next_deal_day(today):
         if is_file_exist(day):
             return day
 
+def last_n_day(today, n):
+    day = today
+    while n:
+        day = last_deal_day(day)
+        if not day:
+            return None
+        day = yestoday(day)
+        n -= 1
+    return day
+
 def next_n_day(today, n):
     day = today
     while n:
@@ -222,22 +232,37 @@ def get_day_data(date):
 
 if __name__ == "__main__":
     date = ""
+    period = 0
+
     try:
         date = sys.argv[1]
     except:
         date = str(datetime.datetime.now().date())
+
+    try:
+        period = int(sys.argv[2])
+    except:
+        period = 0
+
     is_today = False
+
     if date == "yestoday":
         date = last_deal_day(yestoday(str(datetime.datetime.now().date())))
-        print date
+        period = 1
+
+    if period is not 0:
+        date = last_n_day(last_deal_day(date), period)
+
     if date == str(datetime.datetime.now().date()):
         is_today = True
 
     next_day_data = []
     if not is_today:
-        next_day_data = get_day_data(next_n_day(date,1))
+        print "After date: " + next_n_day(date, period)
+        next_day_data = get_day_data(next_n_day(date, period))
 
-    last_day = last_deal_day(date)
+    last_day = last_deal_day(date)  # if date is a deal day, then return date
+    print "Before date: " + last_day
     tops = sort_top_stock(last_day)
     yestoday_tops = sort_top_stock(last_deal_day(yestoday(last_day)))
     tomm_sum = float(0)
@@ -271,14 +296,14 @@ if __name__ == "__main__":
             for stock_next in next_day_data:
                 if stock_next.get('id') == sid:
                     tomm_sum += float(stock_next.get('change'))
-                    print "tomm: " + stock_next.get('change')
+                    print "After %d days: %s " % (period, stock_next.get('change'))
                     break
             else:
                 print "tomm: None"
         else:
             print ""
     if not is_today:
-        print "tomm_sum: " + str(tomm_sum)
+        print "Increase_sum: " + str(tomm_sum)
 
 
     print "success"
